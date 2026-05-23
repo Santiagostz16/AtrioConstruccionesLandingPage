@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!--
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  ATRIO Construcciones y Proyectos S.A.S                      ║
+    ║  Landing Page · Frontend Principal                           ║
+    ║  Stack: HTML5 + CSS3 Variables + Vanilla JS ES6+             ║
+    ║  Diseño: Industrial-Refinado · Paleta corporativa            ║
+    ║  Fuentes: Barlow Condensed (display) + Source Serif 4 (body) ║
+    ╚══════════════════════════════════════════════════════════════╝
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Atrio Construcciones y Proyectos S.A.S — Construcción, Diseño Arquitectónico y Mantenimiento en Colombia.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Atrio Construcciones y Proyectos">
+  <meta property="og:description" content="Líderes en construcción y diseño arquitectónico en Colombia.">
+  <meta property="og:type" content="website">
+
+  <!-- Fuentes corporativas: industrial + serif refinado -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+
+  <title>Atrio Construcciones y Proyectos S.A.S</title>
+  <style>
+    /* ═══════════════════════════════════════════════════
+       VARIABLES GLOBALES DE MARCA
+       Paleta extraída del Brand Guide ATRIO Abril 2024
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --amarillo:     #F5C300;
+      --amarillo-dk:  #D4A800;
+      --gris-oscuro:  #3A3A3A;
+      --gris-medio:   #555555;
+      --gris-claro:   #F0F0F0;
+      --blanco:       #FFFFFF;
+      --negro:        #111111;
+      --error:        #C0392B;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body:    'Source Serif 4', serif;
+      --radio:        4px;
+      --t:            0.28s cubic-bezier(0.4,0,0.2,1);
+      --shadow:       0 4px 24px rgba(0,0,0,.10);
+      --shadow-lg:    0 12px 40px rgba(0,0,0,.18);
+    }
+
+    /* ═══════════════ RESET ═══════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font-body); color: var(--gris-oscuro); background: var(--blanco); overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ═══════════════ UTILIDADES ═══════════════ */
+    .container   { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .sec-titulo  { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem,5vw,3.2rem); letter-spacing:-.5px; line-height:1.1; color:var(--negro); }
+    .sec-titulo span { color: var(--amarillo); }
+    .sec-sub     { font-weight:300; font-size:1.05rem; color:var(--gris-medio); max-width:560px; line-height:1.75; margin-top:12px; }
+    .badge       { display:inline-block; background:var(--amarillo); color:var(--negro); font-family:var(--font-display); font-weight:700; font-size:.75rem; letter-spacing:2px; text-transform:uppercase; padding:4px 14px; border-radius:2px; margin-bottom:16px; }
+
+    /* ═══════════════ NAVBAR ═══════════════ */
+    #navbar {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      padding:0 24px; height:70px;
+      display:flex; align-items:center; justify-content:space-between;
+      background:transparent;
+      transition: background var(--t), box-shadow var(--t);
+    }
+    #navbar.scrolled { background:rgba(17,17,17,.96); backdrop-filter:blur(12px); box-shadow:0 2px 20px rgba(0,0,0,.3); }
+    .nav-logo { display:flex; align-items:center; gap:12px; }
+    .nav-logo img { height:40px; width:auto; }
+    .nav-logo-txt { font-family:var(--font-display); font-weight:800; font-size:1.05rem; color:var(--blanco); letter-spacing:1px; line-height:1.2; }
+    .nav-logo-txt span { display:block; font-weight:400; font-size:.68rem; color:var(--amarillo); letter-spacing:3px; text-transform:uppercase; }
+    .nav-links { display:flex; gap:28px; list-style:none; align-items:center; }
+    .nav-links a { font-family:var(--font-display); font-weight:600; font-size:.88rem; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.85); transition:color var(--t); position:relative; }
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--amarillo); transition:width var(--t); }
+    .nav-links a:hover { color:var(--blanco); }
+    .nav-links a:hover::after { width:100%; }
+    .nav-cta { background:var(--amarillo)!important; color:var(--negro)!important; padding:10px 22px!important; border-radius:var(--radio)!important; font-weight:700!important; }
+    .nav-cta:hover { background:var(--amarillo-dk)!important; transform:translateY(-1px); }
+    .nav-cta::after { display:none!important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; background:none; border:none; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--blanco); transition:var(--t); }
+    .hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+    .hamburger.active span:nth-child(2) { opacity:0; }
+    .hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+    /* ═══════════════ HERO ═══════════════ */
+    #hero {
+      min-height:100vh;
+      background:
+        linear-gradient(160deg, rgba(17,17,17,.83) 0%, rgba(58,58,58,.62) 60%, rgba(245,195,0,.12) 100%),
+        url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80') center/cover no-repeat;
+      display:flex; align-items:center;
+      padding:100px 24px 80px;
+      position:relative; overflow:hidden;
+    }
+    #hero::before { content:''; position:absolute; right:-80px; top:20%; width:400px; height:400px; border:3px solid rgba(245,195,0,.18); border-radius:50%; pointer-events:none; }
+    #hero::after  { content:''; position:absolute; right:40px;  top:30%; width:200px; height:200px; border:2px solid rgba(245,195,0,.10); border-radius:50%; pointer-events:none; }
+    .hero-content { max-width:680px; position:relative; z-index:1; }
+    .hero-eyebrow { font-family:var(--font-display); font-weight:600; font-size:.83rem; letter-spacing:4px; text-transform:uppercase; color:var(--amarillo); margin-bottom:20px; display:flex; align-items:center; gap:12px; }
+    .hero-eyebrow::before { content:''; display:inline-block; width:32px; height:2px; background:var(--amarillo); }
+    .hero-titulo { font-family:var(--font-display); font-weight:800; font-size:clamp(2.8rem,7vw,5.5rem); line-height:.95; letter-spacing:-1px; color:var(--blanco); margin-bottom:28px; }
+    .hero-titulo em { font-style:normal; color:var(--amarillo); display:block; }
+    .hero-desc { font-weight:300; font-size:1.1rem; line-height:1.78; color:rgba(255,255,255,.80); margin-bottom:40px; max-width:500px; }
+    .hero-botones { display:flex; gap:16px; flex-wrap:wrap; }
+    .btn-primario  { display:inline-flex; align-items:center; gap:8px; background:var(--amarillo); color:var(--negro); font-family:var(--font-display); font-weight:700; font-size:1rem; letter-spacing:1px; text-transform:uppercase; padding:16px 32px; border-radius:var(--radio); border:none; cursor:pointer; transition:background var(--t),transform var(--t),box-shadow var(--t); }
+    .btn-primario:hover  { background:var(--amarillo-dk); transform:translateY(-2px); box-shadow:0 8px 24px rgba(245,195,0,.35); }
+    .btn-secundario { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--blanco); font-family:var(--font-display); font-weight:600; font-size:1rem; letter-spacing:1px; text-transform:uppercase; padding:15px 32px; border-radius:var(--radio); border:2px solid rgba(255,255,255,.4); cursor:pointer; transition:border-color var(--t),color var(--t),transform var(--t); }
+    .btn-secundario:hover { border-color:var(--amarillo); color:var(--amarillo); transform:translateY(-2px); }
+    /* Stats bar al pie del hero */
+    .hero-stats { position:absolute; bottom:40px; left:50%; transform:translateX(-50%); width:calc(100% - 48px); max-width:1152px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(255,255,255,.1); border-radius:var(--radio); overflow:hidden; backdrop-filter:blur(8px); }
+    .stat-item  { padding:20px 24px; background:rgba(17,17,17,.55); text-align:center; }
+    .stat-num   { font-family:var(--font-display); font-weight:800; font-size:2.2rem; color:var(--amarillo); line-height:1; }
+    .stat-lbl   { font-family:var(--font-display); font-weight:400; font-size:.78rem; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.6); margin-top:4px; }
+
+    /* ═══════════════ NOSOTROS ═══════════════ */
+    #nosotros { padding:100px 0; background:var(--gris-claro); }
+    .nosotros-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    .nosotros-img-wrap { position:relative; }
+    .nosotros-img-wrap::before { content:''; position:absolute; top:-16px; left:-16px; right:16px; bottom:16px; border:3px solid var(--amarillo); border-radius:var(--radio); z-index:0; }
+    .nosotros-img-wrap img { width:100%; height:480px; object-fit:cover; border-radius:var(--radio); position:relative; z-index:1; }
+    .nosotros-texto p { font-size:1rem; line-height:1.82; color:var(--gris-medio); margin-top:20px; }
+    .valores-lista { list-style:none; margin-top:28px; display:flex; flex-direction:column; gap:12px; }
+    .valores-lista li { display:flex; align-items:flex-start; gap:12px; font-size:.95rem; color:var(--gris-oscuro); }
+    .valores-lista li::before { content:''; display:inline-block; width:8px; height:8px; min-width:8px; background:var(--amarillo); border-radius:50%; margin-top:6px; }
+
+    /* ═══════════════ SERVICIOS ═══════════════ */
+    #servicios { padding:100px 0; background:var(--negro); }
+    #servicios .sec-titulo { color:var(--blanco); }
+    .servicios-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+    .servicio-card { position:relative; overflow:hidden; background:var(--gris-oscuro); padding:40px 32px; transition:background var(--t); }
+    .servicio-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:0; background:var(--amarillo); transition:height .4s ease; }
+    .servicio-card:hover { background:#2a2a2a; }
+    .servicio-card:hover::before { height:100%; }
+    .servicio-numero { font-family:var(--font-display); font-weight:800; font-size:3.5rem; color:rgba(245,195,0,.14); line-height:1; margin-bottom:16px; }
+    .servicio-icon   { font-size:2rem; margin-bottom:20px; }
+    .servicio-nombre { font-family:var(--font-display); font-weight:700; font-size:1.5rem; color:var(--blanco); margin-bottom:12px; }
+    .servicio-desc   { font-size:.9rem; line-height:1.7; color:rgba(255,255,255,.58); }
+    .servicio-lista  { list-style:none; margin-top:20px; display:flex; flex-direction:column; gap:6px; }
+    .servicio-lista li { font-size:.84rem; color:rgba(245,195,0,.75); font-family:var(--font-display); font-weight:600; letter-spacing:.5px; }
+    .servicio-lista li::before { content:'→ '; color:var(--amarillo); }
+
+    /* ═══════════════ PORTAFOLIO ═══════════════ */
+    #portafolio { padding:100px 0; background:var(--blanco); }
+    .portafolio-filtros { display:flex; gap:8px; flex-wrap:wrap; margin:40px 0 32px; }
+    .filtro-btn { font-family:var(--font-display); font-weight:600; font-size:.8rem; letter-spacing:1.5px; text-transform:uppercase; padding:8px 20px; border:2px solid var(--gris-claro); border-radius:2px; background:transparent; color:var(--gris-medio); cursor:pointer; transition:all var(--t); }
+    .filtro-btn.activo, .filtro-btn:hover { background:var(--amarillo); border-color:var(--amarillo); color:var(--negro); }
+    .portafolio-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .portafolio-item { position:relative; overflow:hidden; border-radius:var(--radio); cursor:pointer; background:var(--gris-oscuro); }
+    .portafolio-item:nth-child(1) { grid-column:span 2; }
+    .portafolio-item img { width:100%; height:280px; object-fit:cover; transition:transform .5s ease; display:block; }
+    .portafolio-item:nth-child(1) img { height:380px; }
+    .portafolio-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(17,17,17,.9) 0%,transparent 55%); opacity:0; transition:opacity var(--t); display:flex; flex-direction:column; justify-content:flex-end; padding:24px; }
+    .portafolio-item:hover img { transform:scale(1.06); }
+    .portafolio-item:hover .portafolio-overlay { opacity:1; }
+    .portafolio-overlay h3 { font-family:var(--font-display); font-weight:700; font-size:1.2rem; color:var(--blanco); }
+    .portafolio-overlay p  { font-size:.82rem; color:var(--amarillo); font-family:var(--font-display); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-top:4px; }
+
+    /* ═══════════════ CONTACTO + FORMULARIO ═══════════════ */
+    #contacto { padding:100px 0; background:var(--gris-claro); }
+    .contacto-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:64px; align-items:start; margin-top:48px; }
+    .contacto-item  { display:flex; align-items:flex-start; gap:16px; margin-bottom:24px; }
+    .ci-icon { width:44px; height:44px; min-width:44px; background:var(--amarillo); border-radius:var(--radio); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+    .ci-txt strong { display:block; font-family:var(--font-display); font-weight:700; font-size:1rem; color:var(--negro); margin-bottom:2px; }
+    .ci-txt p { font-size:.9rem; color:var(--gris-medio); line-height:1.55; }
+    /* Tarjeta formulario */
+    .form-card { background:var(--blanco); border-radius:var(--radio); padding:40px; box-shadow:var(--shadow); }
+    .form-titulo    { font-family:var(--font-display); font-weight:800; font-size:1.6rem; color:var(--negro); margin-bottom:6px; }
+    .form-subtitulo { font-size:.9rem; color:var(--gris-medio); margin-bottom:28px; }
+    .form-row   { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-group { margin-bottom:20px; }
+    .form-group label { display:block; font-family:var(--font-display); font-weight:600; font-size:.78rem; letter-spacing:1px; text-transform:uppercase; color:var(--gris-oscuro); margin-bottom:6px; }
+    .form-group label .req { color:var(--amarillo); margin-left:2px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea { width:100%; padding:12px 16px; border:2px solid #E0E0E0; border-radius:var(--radio); font-family:var(--font-body); font-size:.95rem; color:var(--gris-oscuro); background:var(--blanco); transition:border-color var(--t),box-shadow var(--t); outline:none; -webkit-appearance:none; appearance:none; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color:var(--amarillo); box-shadow:0 0 0 3px rgba(245,195,0,.15); }
+    .form-group input.err, .form-group select.err, .form-group textarea.err { border-color:var(--error); }
+    .err-msg { display:none; font-size:.74rem; color:var(--error); margin-top:4px; font-family:var(--font-display); font-weight:600; }
+    .err-msg.show { display:block; }
+    .form-group textarea { resize:vertical; min-height:100px; }
+    /* Honeypot - oculto para humanos, visible para bots */
+    .trampa { display:none!important; position:absolute; left:-9999px; }
+    .form-legal { font-size:.77rem; color:var(--gris-medio); margin-bottom:20px; line-height:1.55; }
+    .form-legal a { color:var(--amarillo); border-bottom:1px solid var(--amarillo); }
+    .btn-enviar { width:100%; padding:16px; background:var(--negro); color:var(--blanco); font-family:var(--font-display); font-weight:700; font-size:1rem; letter-spacing:2px; text-transform:uppercase; border:none; border-radius:var(--radio); cursor:pointer; transition:background var(--t),transform var(--t); display:flex; align-items:center; justify-content:center; gap:10px; }
+    .btn-enviar:hover   { background:var(--gris-oscuro); transform:translateY(-1px); }
+    .btn-enviar:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    #form-exito { display:none; text-align:center; padding:40px 20px; }
+    #form-exito .exito-ico { font-size:3rem; margin-bottom:16px; }
+    #form-exito h3 { font-family:var(--font-display); font-weight:800; font-size:1.6rem; color:var(--negro); margin-bottom:8px; }
+    #form-exito p { font-size:.95rem; color:var(--gris-medio); }
+
+    /* ═══════════════ WHATSAPP FLOTANTE ═══════════════ */
+    #wa-float { position:fixed; bottom:28px; right:28px; z-index:999; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+    .wa-tip { background:var(--negro); color:var(--blanco); font-family:var(--font-display); font-weight:600; font-size:.8rem; padding:8px 14px; border-radius:4px; white-space:nowrap; opacity:0; transform:translateX(10px); transition:opacity var(--t),transform var(--t); pointer-events:none; }
+    #wa-float:hover .wa-tip { opacity:1; transform:translateX(0); }
+    .wa-btn { width:60px; height:60px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(37,211,102,.4); transition:transform var(--t),box-shadow var(--t); cursor:pointer; position:relative; }
+    .wa-btn:hover { transform:scale(1.1); box-shadow:0 8px 32px rgba(37,211,102,.55); }
+    .wa-btn::before { content:''; position:absolute; width:60px; height:60px; background:rgba(37,211,102,.35); border-radius:50%; animation:pulse-wa 2.5s ease-out infinite; }
+    @keyframes pulse-wa { 0%{transform:scale(1);opacity:.7} 100%{transform:scale(2.2);opacity:0} }
+    .wa-btn svg { width:32px; height:32px; fill:white; position:relative; z-index:1; }
+
+    /* ═══════════════ FOOTER ═══════════════ */
+    footer { background:var(--negro); padding:64px 0 32px; }
+    .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; padding-bottom:48px; border-bottom:1px solid rgba(255,255,255,.08); }
+    .footer-brand img { height:48px; margin-bottom:16px; }
+    .footer-brand p { font-size:.87rem; line-height:1.72; color:rgba(255,255,255,.48); }
+    .footer-col h4 { font-family:var(--font-display); font-weight:700; font-size:.78rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--amarillo); margin-bottom:20px; }
+    .footer-col ul { list-style:none; }
+    .footer-col li { margin-bottom:10px; }
+    .footer-col a { font-size:.87rem; color:rgba(255,255,255,.53); transition:color var(--t); }
+    .footer-col a:hover { color:var(--blanco); }
+    .footer-bottom { display:flex; justify-content:space-between; align-items:center; padding-top:24px; gap:16px; flex-wrap:wrap; }
+    .footer-bottom p { font-size:.78rem; color:rgba(255,255,255,.28); font-family:var(--font-display); }
+    .footer-bottom strong { color:var(--amarillo); }
+
+    /* ═══════════════ ANIMACIONES REVEAL ═══════════════ */
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity .6s ease,transform .6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .d1 { transition-delay:.1s; } .d2 { transition-delay:.2s; } .d3 { transition-delay:.3s; }
+
+    /* ═══════════════ RESPONSIVE ═══════════════ */
+    @media(max-width:900px) {
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .nav-mobile { position:fixed; top:70px; left:0; right:0; background:rgba(17,17,17,.97); backdrop-filter:blur(16px); padding:24px; display:none; flex-direction:column; gap:20px; z-index:999; }
+      .nav-mobile.open { display:flex; }
+      .nav-mobile a { font-family:var(--font-display); font-weight:700; font-size:1.3rem; letter-spacing:2px; text-transform:uppercase; color:var(--blanco); }
+      .nav-mobile a:hover { color:var(--amarillo); }
+      .nosotros-grid, .servicios-grid, .contacto-grid { grid-template-columns:1fr; }
+      .portafolio-grid { grid-template-columns:1fr 1fr; }
+      .portafolio-item:nth-child(1) { grid-column:span 2; }
+      .footer-grid { grid-template-columns:1fr 1fr; }
+      .hero-stats { grid-template-columns:1fr; max-width:280px; left:24px; transform:none; }
+      .form-row { grid-template-columns:1fr; }
+    }
+    @media(max-width:600px) {
+      .portafolio-grid { grid-template-columns:1fr; }
+      .portafolio-item:nth-child(1) { grid-column:span 1; }
+      .footer-grid { grid-template-columns:1fr; }
+      .hero-stats { display:none; }
+      .hero-botones { flex-direction:column; }
+      .btn-primario,.btn-secundario { width:100%; justify-content:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       NAVBAR FIJA
+       JS agrega clase 'scrolled' en scroll >50px
+  ══════════════════════════════════════ -->
+  <nav id="navbar" role="navigation" aria-label="Menú principal">
+    <div class="nav-logo">
+      <!--
+        INSTRUCCIÓN ECLIPSE: reemplazar src con la ruta del logo
+        copiado en src/main/resources/static/img/logo-atrio.png
+      -->
+      <img src="img/logo-atrio.png" alt="Atrio Construcciones y Proyectos S.A.S" width="40"
+           onerror="this.style.display='none'">
+      <div class="nav-logo-txt">
+        ATRIO
+        <span>Construcciones y Proyectos</span>
+      </div>
+    </div>
+    <ul class="nav-links" role="list">
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#portafolio">Portafolio</a></li>
+      <li><a href="#contacto" class="nav-cta">Contáctenos</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Menú móvil -->
+  <nav class="nav-mobile" id="nav-mobile" aria-label="Menú móvil">
+    <a href="#nosotros"  onclick="cerrarMenu()">Nosotros</a>
+    <a href="#servicios" onclick="cerrarMenu()">Servicios</a>
+    <a href="#portafolio"onclick="cerrarMenu()">Portafolio</a>
+    <a href="#contacto"  onclick="cerrarMenu()">Contáctenos</a>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO — Sección de impacto inicial
+  ══════════════════════════════════════ -->
+  <section id="inicio" aria-label="Inicio">
+    <div id="hero">
+      <div class="container">
+        <div class="hero-content">
+          <p class="hero-eyebrow">Bogotá, Colombia · Desde 2018</p>
+          <h1 class="hero-titulo">
+            Construimos
+            <em>Tu Visión.</em>
+          </h1>
+          <p class="hero-desc">
+            Arquitectura, construcción y mantenimiento de alto estándar.
+            Cada proyecto es una obra de ingeniería, precisión
+            y compromiso con Colombia.
+          </p>
+          <div class="hero-botones">
+            <a href="#contacto" class="btn-primario">✦ Solicitar Cotización</a>
+            <a href="#portafolio" class="btn-secundario">Ver Portafolio →</a>
+          </div>
+        </div>
+      </div>
+      <!-- Barra de estadísticas al pie del hero -->
+      <div class="hero-stats" aria-label="Indicadores">
+        <div class="stat-item"><div class="stat-num">+50</div><div class="stat-lbl">Proyectos Entregados</div></div>
+        <div class="stat-item"><div class="stat-num">+7</div><div class="stat-lbl">Años de Experiencia</div></div>
+        <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Clientes Satisfechos</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       NOSOTROS
+  ══════════════════════════════════════ -->
+  <section id="nosotros" aria-label="Quiénes somos">
+    <div class="container">
+      <div class="nosotros-grid">
+        <div class="nosotros-img-wrap reveal">
+          <img src="https://images.unsplash.com/photo-1590579491624-f98f36d4c763?w=800&q=80"
+               alt="Obra de construcción Atrio" loading="lazy">
+        </div>
+        <div class="reveal d1">
+          <span class="badge">Quiénes Somos</span>
+          <h2 class="sec-titulo">Expertos en <span>Construcción</span></h2>
+          <p>Atrio Construcciones y Proyectos S.A.S es una empresa bogotana especializada en construcción civil, diseño arquitectónico e interventoría. Trabajamos con los más altos estándares técnicos, garantizando calidad, puntualidad y transparencia en cada obra.</p>
+          <p>Nuestro equipo de arquitectos e ingenieros ha ejecutado proyectos en sectores residencial, comercial e industrial a lo largo del territorio nacional, incluyendo obras para clientes de primer nivel como BYD Colombia.</p>
+          <ul class="valores-lista">
+            <li>Calidad técnica certificada en cada proceso constructivo</li>
+            <li>Cumplimiento riguroso de plazos y presupuestos</li>
+            <li>Equipo multidisciplinario de arquitectos e ingenieros</li>
+            <li>Transparencia total en reportes e interventoría</li>
+            <li>Presencia en Bogotá, Bucaramanga, Medellín y más</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SERVICIOS
+  ══════════════════════════════════════ -->
+  <section id="servicios" aria-label="Nuestros servicios">
+    <div class="container">
+      <span class="badge">Lo que hacemos</span>
+      <h2 class="sec-titulo" style="color:var(--blanco)">Nuestros <span>Servicios</span></h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,.55)">Soluciones integrales de construcción, diseño y mantenimiento para proyectos residenciales, comerciales e industriales.</p>
+      <div class="servicios-grid" role="list">
+
+        <article class="servicio-card reveal" role="listitem">
+          <div class="servicio-numero">01</div>
+          <div class="servicio-icon">🏗️</div>
+          <h3 class="servicio-nombre">Construcción Civil</h3>
+          <p class="servicio-desc">Ejecución de obras civiles con materiales de primera calidad, manejo eficiente de recursos y supervisión técnica permanente.</p>
+          <ul class="servicio-lista">
+            <li>Estructuras en concreto y acero</li>
+            <li>Cimentaciones y obras subterráneas</li>
+            <li>Acabados y obras complementarias</li>
+            <li>Cerramientos y adecuaciones</li>
+          </ul>
+        </article>
+
+        <article class="servicio-card reveal d1" role="listitem">
+          <div class="servicio-numero">02</div>
+          <div class="servicio-icon">📐</div>
+          <h3 class="servicio-nombre">Diseño Arquitectónico</h3>
+          <p class="servicio-desc">Proyectos de arquitectura funcionales y estéticos, adaptados a cada cliente y a la normativa colombiana vigente.</p>
+          <ul class="servicio-lista">
+            <li>Planos y esquemas arquitectónicos</li>
+            <li>Renderizado 3D</li>
+            <li>Licencias ante curadurías</li>
+            <li>Diseños eléctricos especializados</li>
+          </ul>
+        </article>
+
+        <article class="servicio-card reveal d2" role="listitem">
+          <div class="servicio-numero">03</div>
+          <div class="servicio-icon">🔧</div>
+          <h3 class="servicio-nombre">Mantenimiento</h3>
+          <p class="servicio-desc">Programas preventivos y correctivos para conservar la vida útil y el valor de sus instalaciones.</p>
+          <ul class="servicio-lista">
+            <li>Mantenimiento eléctrico industrial</li>
+            <li>Plomería y redes hidráulicas</li>
+            <li>Pintura y revestimientos</li>
+            <li>Interventoría de obras</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PORTAFOLIO — Grid dinámico con filtros
+  ══════════════════════════════════════ -->
+  <section id="portafolio" aria-label="Portafolio de proyectos">
+    <div class="container">
+      <span class="badge">Nuestros Proyectos</span>
+      <h2 class="sec-titulo">Portafolio de <span>Obras</span></h2>
+      <p class="sec-sub">Proyectos ejecutados con excelencia técnica en Colombia.</p>
+
+      <div class="portafolio-filtros" role="group" aria-label="Filtrar proyectos">
+        <button class="filtro-btn activo" data-filtro="todos" aria-pressed="true">Todos</button>
+        <button class="filtro-btn" data-filtro="construccion" aria-pressed="false">Construcción</button>
+        <button class="filtro-btn" data-filtro="diseno" aria-pressed="false">Diseño</button>
+        <button class="filtro-btn" data-filtro="mantenimiento" aria-pressed="false">Mantenimiento</button>
+      </div>
+
+      <div class="portafolio-grid" id="portafolio-grid">
+
+        <div class="portafolio-item reveal" data-cat="construccion">
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" alt="Alero BYD Guayabal" loading="lazy">
+          <div class="portafolio-overlay">
+            <h3>Alero Estacionamiento BYD Guayabal</h3>
+            <p>Construcción · Medellín 2024</p>
+          </div>
+        </div>
+
+        <div class="portafolio-item reveal d1" data-cat="diseno">
+          <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80" alt="Proyecto La Mesa" loading="lazy">
+          <div class="portafolio-overlay">
+            <h3>Proyecto La Mesa – Arq. Cristian</h3>
+            <p>Diseño Arquitectónico · 2024</p>
+          </div>
+        </div>
+
+        <div class="portafolio-item reveal d2" data-cat="construccion">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Cimentación Bucaramanga" loading="lazy">
+          <div class="portafolio-overlay">
+            <h3>Cimentación Bucaramanga</h3>
+            <p>Construcción Civil · 2024</p>
+          </div>
+        </div>
+
+        <div class="portafolio-item reveal d1" data-cat="mantenimiento">
+          <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80" alt="Correctivos Eléctricos BYD" loading="lazy">
+          <div class="portafolio-overlay">
+            <h3>Correctivos Eléctricos BYD Puente Aranda</h3>
+            <p>Mantenimiento · Bogotá 2024</p>
+          </div>
+        </div>
+
+        <div class="portafolio-item reveal d2" data-cat="construccion">
+          <img src="https://images.unsplash.com/photo-1590579491624-f98f36d4c763?w=600&q=80" alt="Cerramiento Transformadores" loading="lazy">
+          <div class="portafolio-overlay">
+            <h3>Cerramiento Transformadores BYD</h3>
+            <p>Construcción · Medellín 2024</p>
+          </div>
+        </div>
+
+        <div class="portafolio-item reveal d3" data-cat="diseno">
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80" alt="Propuesta Ing. Fabián" loading="lazy">
+          <div class="portafolio-overlay">
+            <h3>Propuesta Ing. Fabián B.</h3>
+            <p>Diseño y Construcción · 2023</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACTO — Formulario de captura leads
+       Validación doble: frontend JS + backend Java
+  ══════════════════════════════════════ -->
+  <section id="contacto" aria-label="Contacto y cotización">
+    <div class="container">
+      <span class="badge">Hablemos</span>
+      <h2 class="sec-titulo">¿Tiene un <span>Proyecto</span>?</h2>
+      <p class="sec-sub">Cuéntenos su idea. Le respondemos en menos de 24 horas con una propuesta personalizada.</p>
+
+      <div class="contacto-grid">
+        <!-- Datos de contacto reales de Atrio -->
+        <div class="reveal">
+          <div class="contacto-item">
+            <div class="ci-icon">📞</div>
+            <div class="ci-txt"><strong>Teléfono / WhatsApp</strong><p>+57 300 516 42 30<br>Arq. Juan Pablo Ramírez S.</p></div>
+          </div>
+          <div class="contacto-item">
+            <div class="ci-icon">✉️</div>
+            <div class="ci-txt"><strong>Correo Electrónico</strong><p>juan.ramirez@atrioconstrucciones.com.co<br>info@atrioconstrucciones.com.co</p></div>
+          </div>
+          <div class="contacto-item">
+            <div class="ci-icon">📍</div>
+            <div class="ci-txt"><strong>Dirección</strong><p>Calle 5c 56-17, Bogotá D.C.<br>Colombia</p></div>
+          </div>
+          <div class="contacto-item">
+            <div class="ci-icon">🌐</div>
+            <div class="ci-txt"><strong>Sitio Web</strong><p>www.atrioconstrucciones.com.co</p></div>
+          </div>
+        </div>
+
+        <!-- Tarjeta del formulario -->
+        <div class="form-card reveal d1">
+          <div id="form-contenido">
+            <h3 class="form-titulo">Solicitar Cotización</h3>
+            <p class="form-subtitulo">Complete el formulario y lo contactamos pronto.</p>
+
+            <!--
+              FORMULARIO DE LEADS
+              Flujo: Validación JS → fetch POST /api/leads → Spring Boot → DB + Notificación
+              Protecciones: honeypot, timestamp, validación regex, sanitización
+            -->
+            <form id="leadForm" novalidate autocomplete="off" aria-label="Formulario cotización">
+
+              <!-- HONEYPOT: invisible para humanos, los bots lo llenan -->
+              <div class="trampa" aria-hidden="true">
+                <input type="text" name="website" tabindex="-1" autocomplete="off">
+              </div>
+              <!-- Timestamp: detecta envíos automáticos (< 3 segundos) -->
+              <input type="hidden" id="ts" name="ts">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nombre">Nombre <span class="req">*</span></label>
+                  <input type="text" id="nombre" name="nombre" placeholder="Juan García" maxlength="100" aria-required="true" aria-describedby="err-nombre">
+                  <span class="err-msg" id="err-nombre" role="alert">Ingrese su nombre completo.</span>
+                </div>
+                <div class="form-group">
+                  <label for="empresa">Empresa (opcional)</label>
+                  <input type="text" id="empresa" name="empresa" placeholder="Mi Empresa S.A.S" maxlength="100">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Correo <span class="req">*</span></label>
+                  <input type="email" id="email" name="email" placeholder="correo@empresa.com" maxlength="120" aria-required="true" aria-describedby="err-email">
+                  <span class="err-msg" id="err-email" role="alert">Ingrese un email válido.</span>
+                </div>
+                <div class="form-group">
+                  <label for="telefono">Teléfono <span class="req">*</span></label>
+                  <input type="tel" id="telefono" name="telefono" placeholder="300 516 4230" maxlength="20" aria-required="true" aria-describedby="err-tel">
+                  <span class="err-msg" id="err-tel" role="alert">Teléfono colombiano requerido.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="servicio">Servicio de Interés <span class="req">*</span></label>
+                <select id="servicio" name="servicio" aria-required="true" aria-describedby="err-srv">
+                  <option value="">— Seleccione un servicio —</option>
+                  <option value="construccion">Construcción Civil</option>
+                  <option value="diseno_arquitectonico">Diseño Arquitectónico</option>
+                  <option value="mantenimiento_electrico">Mantenimiento Eléctrico</option>
+                  <option value="mantenimiento_general">Mantenimiento General</option>
+                  <option value="interventoria">Interventoría</option>
+                  <option value="otro">Otro / Consulta General</option>
+                </select>
+                <span class="err-msg" id="err-srv" role="alert">Seleccione un servicio.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="mensaje">Descripción del Proyecto</label>
+                <textarea id="mensaje" name="mensaje" placeholder="Describa su proyecto: ubicación, dimensiones, plazo estimado..." maxlength="1000" rows="4"></textarea>
+              </div>
+
+              <p class="form-legal">Al enviar acepta nuestra <a href="#" aria-label="Política de privacidad">política de privacidad</a>. Sus datos se usan únicamente para responder su solicitud.</p>
+
+              <button type="submit" class="btn-enviar" id="btn-enviar">
+                <span id="btn-txt">Enviar Solicitud ✦</span>
+                <span id="btn-spin" style="display:none">⏳ Enviando...</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Estado de éxito post-envío -->
+          <div id="form-exito" role="status" aria-live="polite">
+            <div class="exito-ico">✅</div>
+            <h3>¡Solicitud Recibida!</h3>
+            <p>Nuestro equipo le contactará en las próximas 24 horas.<br>¡Gracias por confiar en Atrio!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       BOTÓN FLOTANTE WHATSAPP
+       Número real: +57 300 516 42 30
+  ══════════════════════════════════════ -->
+  <div id="wa-float" aria-label="Contactar por WhatsApp">
+    <span class="wa-tip">¡Escríbanos ahora!</span>
+    <a class="wa-btn"
+       href="https://wa.me/573005164230?text=Hola%20Atrio%2C%20me%20interesa%20una%20cotización."
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Chat WhatsApp con Atrio">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="img/logo-atrio.png" alt="Atrio Construcciones" width="56" onerror="this.style.display='none'">
+          <p>Empresa colombiana especializada en construcción civil, diseño arquitectónico e interventoría. Bogotá D.C., Colombia.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#portafolio">Portafolio</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Servicios</h4>
+          <ul>
+            <li><a href="#servicios">Construcción Civil</a></li>
+            <li><a href="#servicios">Diseño Arquitectónico</a></li>
+            <li><a href="#servicios">Mantenimiento</a></li>
+            <li><a href="#servicios">Interventoría</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <ul>
+            <li><a href="tel:+573005164230">+57 300 516 42 30</a></li>
+            <li><a href="mailto:juan.ramirez@atrioconstrucciones.com.co">Correo Electrónico</a></li>
+            <li><a href="#">Calle 5c 56-17, Bogotá</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <strong>Atrio Construcciones y Proyectos S.A.S</strong> · NIT registrado ante Cámara de Comercio de Bogotá</p>
+        <p>Hecho en Colombia 🇨🇴</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       JAVASCRIPT — Lógica del Frontend
+       Sin dependencias externas (Vanilla JS)
+  ══════════════════════════════════════ -->
+  <script>
+    'use strict';
+
+    /* ── 1. NAVBAR SCROLL ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      // Cambia fondo al bajar 50px
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    /* ── 2. MENÚ HAMBURGUESA ── */
+    const ham = document.getElementById('hamburger');
+    const navM = document.getElementById('nav-mobile');
+    ham.addEventListener('click', () => {
+      const open = navM.classList.toggle('open');
+      ham.classList.toggle('active', open);
+      ham.setAttribute('aria-expanded', open);
+    });
+    function cerrarMenu() {
+      navM.classList.remove('open');
+      ham.classList.remove('active');
+      ham.setAttribute('aria-expanded', 'false');
+    }
+
+    /* ── 3. REVEAL AL SCROLL (IntersectionObserver API) ── */
+    // Más eficiente que scroll listeners; dispara callback al entrar en viewport
+    const revObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revObs.unobserve(e.target); // Una sola vez
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+    /* ── 4. FILTROS PORTAFOLIO ── */
+    document.querySelectorAll('.filtro-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Actualizar aria-pressed y clase activa
+        document.querySelectorAll('.filtro-btn').forEach(b => {
+          b.classList.remove('activo'); b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('activo');
+        btn.setAttribute('aria-pressed', 'true');
+
+        const f = btn.dataset.filtro;
+        document.querySelectorAll('.portafolio-item').forEach(item => {
+          const ok = f === 'todos' || item.dataset.cat === f;
+          item.style.cssText = ok
+            ? 'opacity:1;transform:scale(1);pointer-events:auto;transition:opacity .3s,transform .3s'
+            : 'opacity:.2;transform:scale(.95);pointer-events:none;transition:opacity .3s,transform .3s';
+        });
+      });
+    });
+
+    /* ── 5. FORMULARIO DE LEADS ── */
+
+    // Registrar momento de carga: detectar bots que envían < 3 segundos
+    document.getElementById('ts').value = Date.now();
+
+    /**
+     * Valida todos los campos. Retorna true si son válidos.
+     * Muestra mensajes de error inline accesibles (role=alert).
+     */
+    function validar() {
+      let ok = true;
+      let primerError = null;
+
+      function check(campoId, errId, condMala) {
+        const campo = document.getElementById(campoId);
+        const errEl  = document.getElementById(errId);
+        if (condMala) {
+          campo.classList.add('err');
+          errEl.classList.add('show');
+          if (!primerError) primerError = campo;
+          ok = false;
+        } else {
+          campo.classList.remove('err');
+          errEl.classList.remove('show');
+        }
+      }
+
+      const nombre   = document.getElementById('nombre').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const servicio = document.getElementById('servicio').value;
+
+      // Nombre: mínimo 2 chars, solo letras y espacios (acentos incluidos)
+      check('nombre',   'err-nombre', nombre.length < 2 || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s''-]{2,100}$/.test(nombre));
+      // Email: formato básico RFC5322
+      check('email',    'err-email',  !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email));
+      // Teléfono: formato colombiano (opcionalmente +57, 7-10 dígitos)
+      const telLimpio = telefono.replace(/[\s\-\(\)]/g, '');
+      check('telefono', 'err-tel',    !/^(\+?57)?[0-9]{7,10}$/.test(telLimpio));
+      // Servicio: debe seleccionarse
+      check('servicio', 'err-srv',    !servicio);
+
+      if (primerError) primerError.focus();
+      return ok;
+    }
+
+    document.getElementById('leadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // ── Protección 1: Honeypot ──
+      // Si el campo oculto tiene contenido, es un bot automatizado
+      if (document.querySelector('input[name="website"]').value) {
+        console.warn('[ATRIO] Bot detectado (honeypot). Descartado.');
+        return;
+      }
+
+      // ── Protección 2: Velocidad de llenado ──
+      // Los bots llenan formularios en milisegundos; exigir al menos 3 segundos
+      const elapsed = Date.now() - parseInt(document.getElementById('ts').value, 10);
+      if (elapsed < 3000) {
+        console.warn('[ATRIO] Envío demasiado rápido. Posible bot.');
+        return;
+      }
+
+      // ── Validación frontend ──
+      if (!validar()) return;
+
+      // Deshabilitar botón y mostrar spinner de carga
+      const btn = document.getElementById('btn-enviar');
+      document.getElementById('btn-txt').style.display  = 'none';
+      document.getElementById('btn-spin').style.display = 'inline';
+      btn.disabled = true;
+
+      // Construir payload JSON limpio (truncado para seguridad)
+      const payload = {
+        nombre:   document.getElementById('nombre').value.trim().slice(0, 100),
+        empresa:  document.getElementById('empresa').value.trim().slice(0, 100),
+        email:    document.getElementById('email').value.trim().toLowerCase().slice(0, 120),
+        telefono: document.getElementById('telefono').value.trim().slice(0, 20),
+        servicio: document.getElementById('servicio').value,
+        mensaje:  document.getElementById('mensaje').value.trim().slice(0, 1000),
+        origen:   'landing_page',
+      };
+
+      try {
+        // ── Envío asincrónico al endpoint del backend Spring Boot ──
+        // El token CSRF es inyectado automáticamente por Spring Security (ver LeadController.java)
+        const res = await fetch('/api/leads', {
+          method:  'POST',
+          headers: {
+            'Content-Type':    'application/json',
+            'X-Requested-With': 'XMLHttpRequest' // Marca AJAX para Spring Security
+          },
+          body:   JSON.stringify(payload),
+          signal: AbortSignal.timeout(10000) // Timeout 10 segundos
+        });
+
+        if (res.ok) {
+          // Éxito: mostrar mensaje de confirmación
+          document.getElementById('form-contenido').style.display = 'none';
+          document.getElementById('form-exito').style.display     = 'block';
+        } else {
+          alert('Error del servidor. Por favor intente nuevamente o escríbanos por WhatsApp.');
+          btn.disabled = false;
+          document.getElementById('btn-txt').style.display  = 'inline';
+          document.getElementById('btn-spin').style.display = 'none';
+        }
+      } catch (err) {
+        console.error('[ATRIO] Error de red:', err);
+        alert('Sin conexión. Verifique su internet e intente de nuevo.');
+        btn.disabled = false;
+        document.getElementById('btn-txt').style.display  = 'inline';
+        document.getElementById('btn-spin').style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
